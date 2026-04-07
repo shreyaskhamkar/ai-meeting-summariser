@@ -5,6 +5,8 @@ build/
 .DS_Store
 .env
 *.env.local
+client/node_modules/
+client/dist/
 
 # .NET
 bin/
@@ -25,3 +27,8 @@ obj/
 
 # Uploads
 Uploads/
+
+# Secrets
+*.pfx
+*.key
+credentials.json
