@@ -8,13 +8,17 @@ branches:
 jobs:
 deploy:
 runs-on: ubuntu-latest
+
+defaults:
+  run:
+    working-directory: server
+
 steps:
-- name: Checkout code
-uses: actions/checkout@v4
+  - name: Checkout code
+    uses: actions/checkout@v4
 
   - name: Install server dependencies
     run: npm install
-    working-directory: ./server
 
   - name: Trigger Render Deploy
     run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
