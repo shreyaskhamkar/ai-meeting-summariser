@@ -1,13 +1,20 @@
-name: Deploy
+name: Deploy Backend to Render
 
 on:
 push:
-branches: [master]
+branches:
+- master
 
 jobs:
 deploy:
 runs-on: ubuntu-latest
 steps:
-- uses: actions/checkout@v3
-- run: cd server && npm install
-- run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+- name: Checkout code
+uses: actions/checkout@v4
+
+  - name: Install server dependencies
+    run: npm install
+    working-directory: ./server
+
+  - name: Trigger Render Deploy
+    run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
