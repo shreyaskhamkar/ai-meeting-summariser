@@ -1,30 +1,17 @@
-name: Client CI
+name: Deploy Client to Vercel
 
 on:
 push:
 branches: [master]
 paths:
 - 'client/**'
-- '.github/workflows/client-ci.yml'
-
-pull_request:
-branches: [master]
-paths:
-- 'client/**'
+- '.github/workflows/deploy-client.yml'
 
 jobs:
-build-client:
+deploy:
 runs-on: ubuntu-latest
 
 steps:
-  - uses: actions/checkout@v4
-
-  - name: Install client dependencies
+  - name: Trigger Vercel Deploy
     run: |
-      cd client
-      npm install
-
-  - name: Build client
-    run: |
-      cd client
-      npm run build
+      curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
