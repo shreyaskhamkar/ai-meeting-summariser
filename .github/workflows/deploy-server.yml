@@ -1,23 +1,30 @@
 name: Deploy Backend to Render
 
 on:
-push:
-branches: [master]
+  push:
+    branches: [master]
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
 
-defaults:
-  run:
-    working-directory: server
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
-  - name: Install server dependencies
-    run: npm install
+      - name: Restore dependencies
+        run: dotnet restore src/Api/Api.csproj
 
-  - name: Trigger Render Deploy
-    run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      - name: Build
+        run: dotnet build src/Api/Api.csproj --configuration Release --no-restore
+
+      - name: Trigger Render Deploy
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
