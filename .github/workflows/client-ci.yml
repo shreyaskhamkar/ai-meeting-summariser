@@ -1,17 +1,16 @@
 name: Deploy Client to Vercel
 
 on:
-push:
-branches: [master]
-paths:
-- 'client/**'
-- '.github/workflows/deploy-client.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'client/**'
+      - '.github/workflows/client-ci.yml'
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Trigger Vercel Deploy
-    run: |
-      curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
+    steps:
+      - name: Trigger Vercel Deploy
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
